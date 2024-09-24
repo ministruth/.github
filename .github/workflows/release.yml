@@ -11,6 +11,10 @@ on:
         description: "Additional command"
         required: false
         type: string
+      static:
+        description: "Whether to include static files"
+        required: false
+        type: boolean
 
 jobs:
   release:
@@ -22,6 +26,21 @@ jobs:
           path: .
           pattern: ${{ inputs.prefix }}-*
           merge-multiple: true
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.static }}
+        with:
+          name: static
+          path: assets
+      - name: Merge static
+        if: ${{ inputs.static }}
+        shell: bash
+        run: |
+          cp -r assets ${{ inputs.prefix }}-linux-x86_64
+          cp -r assets ${{ inputs.prefix }}-linux-i686
+          cp -r assets ${{ inputs.prefix }}-linux-aarch64
+          cp -r assets ${{ inputs.prefix }}-windows-x86_64
+          cp -r assets ${{ inputs.prefix }}-macOS-x86_64
+          cp -r assets ${{ inputs.prefix }}-macOS-aarch64
       - name: Merge output
         shell: bash
         run: |
