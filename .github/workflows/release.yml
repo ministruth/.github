@@ -1,0 +1,48 @@
+name: Release artifact
+
+on:
+  workflow_call:
+    inputs:
+      prefix:
+        description: "Artifact prefix"
+        required: false
+        type: string
+      cmd:
+        description: "Additional command"
+        required: false
+        type: string
+
+jobs:
+  release:
+    name: Package plugin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: .
+          pattern: ${{ inputs.prefix }}-*
+          merge-multiple: true
+      - name: Merge output
+        shell: bash
+        run: |
+          ${{ inputs.cmd }}
+          mkdir release
+          tar czvf release/${{ inputs.prefix }}-linux-x86_64.tar.gz ${{ inputs.prefix }}-linux-x86_64
+          tar czvf release/${{ inputs.prefix }}-linux-i686.tar.gz ${{ inputs.prefix }}-linux-i686
+          tar czvf release/${{ inputs.prefix }}-linux-aarch64.tar.gz ${{ inputs.prefix }}-linux-aarch64
+          7z a release/${{ inputs.prefix }}-windows-x86_64.zip ${{ inputs.prefix }}-windows-x86_64
+          tar czvf release/${{ inputs.prefix }}-darwin-x86_64.tar.gz ${{ inputs.prefix }}-macOS-x86_64
+          tar czvf release/${{ inputs.prefix }}-darwin-aarch64.tar.gz ${{ inputs.prefix }}-macOS-aarch64
+      - name: Generate SHA-256
+        shell: bash
+        run: |
+          cd release
+          for filename in `ls`;do
+            shasum -a 256 $filename > $filename.sha256
+          done
+          cd -
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          files: release/*
