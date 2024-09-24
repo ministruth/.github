@@ -1,0 +1,16 @@
+name: Publish crate
+
+on:
+  workflow_call:
+
+jobs:
+  publish:
+    name: Publish crate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Login
+        run: cargo login ${{ secrets.CRATES_IO_TOKEN }}
+      - name: Push to crate.io
+        run: |
+          cargo publish --no-verify || true
