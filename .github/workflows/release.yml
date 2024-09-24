@@ -25,8 +25,8 @@ jobs:
       - name: Merge output
         shell: bash
         run: |
-          ${{ inputs.cmd }}
           mkdir release
+          ${{ inputs.cmd }}
           tar czvf release/${{ inputs.prefix }}-linux-x86_64.tar.gz ${{ inputs.prefix }}-linux-x86_64
           tar czvf release/${{ inputs.prefix }}-linux-i686.tar.gz ${{ inputs.prefix }}-linux-i686
           tar czvf release/${{ inputs.prefix }}-linux-aarch64.tar.gz ${{ inputs.prefix }}-linux-aarch64
