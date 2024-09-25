@@ -11,6 +11,10 @@ on:
         description: "Whether to upload artifact"
         required: false
         type: boolean
+      args:
+        description: "Additional args"
+        required: false
+        type: string
 
 jobs:
   build:
@@ -66,7 +70,7 @@ jobs:
         with:
           command: "both"
           target: ${{ matrix.platform.target }}
-          args: "--locked --release"
+          args: "--locked --release ${{ inputs.args }}"
           strip: false
       - name: Package as archive
         if: ${{ inputs.upload }}
