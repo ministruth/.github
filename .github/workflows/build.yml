@@ -70,7 +70,7 @@ jobs:
         with:
           command: "both"
           target: ${{ matrix.platform.target }}
-          args: "--locked --release ${{ inputs.args }}"
+          args: "--release ${{ inputs.args }}"
           strip: false
       - name: Package as archive
         if: ${{ inputs.upload }}
