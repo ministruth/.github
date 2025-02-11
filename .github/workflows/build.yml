@@ -35,9 +35,6 @@ jobs:
           - os_name: windows-x86_64
             os: windows-latest
             target: x86_64-pc-windows-msvc
-          - os_name: windows-i686
-            os: windows-latest
-            target: i686-pc-windows-msvc
           - os_name: darwin-x86_64
             os: macos-13
             target: x86_64-apple-darwin
@@ -52,6 +49,12 @@ jobs:
         uses: Swatinem/rust-cache@v2
       - uses: ilammy/setup-nasm@v1
         if: ${{ matrix.platform.os == 'windows-latest'}}
+      - name: Install windows deps
+        if: ${{ matrix.platform.os == 'windows-latest'}}
+        shell: powershell
+        run: |
+          echo "VCPKG_ROOT=$env:VCPKG_INSTALLATION_ROOT" | Out-File -FilePath $env:GITHUB_ENV -Append
+          vcpkg install openssl:x64-windows-static-md
       - name: Install i686 deps
         if: ${{ matrix.platform.os_name == 'linux-i686'}}
         shell: bash
