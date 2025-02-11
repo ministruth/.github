@@ -57,6 +57,8 @@ jobs:
         shell: bash
         run: |
           sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install -y gcc-multilib g++-multilib libssl-dev:i386
+          echo "OPENSSL_INCLUDE_DIR=/usr/include/i386-linux-gnu/openssl" >> $GITHUB_ENV
+          echo "OPENSSL_LIB_DIR=/usr/lib/i386-linux-gnu" >> $GITHUB_ENV
       - name: Install Protoc
         id: protoc-install
         uses: arduino/setup-protoc@v3
