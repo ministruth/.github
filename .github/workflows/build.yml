@@ -52,6 +52,11 @@ jobs:
         uses: Swatinem/rust-cache@v2
       - uses: ilammy/setup-nasm@v1
         if: ${{ matrix.platform.os == 'windows-latest'}}
+      - name: Install i686 deps
+        if: ${{ matrix.platform.os_name == 'linux-i686'}}
+        shell: bash
+        run: |
+          apt-get update && apt-get install -y gcc-multilib g++-multilib
       - name: Install Protoc
         id: protoc-install
         uses: arduino/setup-protoc@v3
