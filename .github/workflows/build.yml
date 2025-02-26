@@ -73,9 +73,9 @@ jobs:
         if: ${{ matrix.platform.os == 'windows-2025'}}
         shell: bash
         run: |
-          echo "OPENSSL_DIR=\"C:\\Program Files\\OpenSSL\"" >> $GITHUB_ENV
+          echo "OPENSSL_DIR=C:\\Program Files\\OpenSSL" >> $GITHUB_ENV
           echo "OPENSSL_STATIC=true" >> $GITHUB_ENV
-          echo "OPENSSL_LIB_DIR=\"C:\\Program Files\\OpenSSL\\lib\\VC\\x64\\MD\"" >> $GITHUB_ENV
+          echo "OPENSSL_LIB_DIR=C:\\Program Files\\OpenSSL\\lib\\VC\\x64\\MD" >> $GITHUB_ENV
       - name: Install Protoc
         id: protoc-install
         uses: arduino/setup-protoc@v3
