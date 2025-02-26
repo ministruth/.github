@@ -45,6 +45,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+      - name: Update rust
+        shell: bash
+        run: |
+          rustup update
       - name: Cache cargo & target directories
         uses: Swatinem/rust-cache@v2
       - uses: ilammy/setup-nasm@v1
