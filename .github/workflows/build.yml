@@ -11,6 +11,14 @@ on:
         description: "Whether to upload artifact"
         required: false
         type: boolean
+      lib:
+        description: "Whether to build libs"
+        required: false
+        type: boolean
+      bin:
+        description: "Whether to build bins"
+        required: false
+        type: boolean
       args:
         description: "Additional args"
         required: false
@@ -71,7 +79,18 @@ jobs:
         shell: bash
         run: |
           echo "${{ steps.protoc-install.outputs.path }}" >> $GITHUB_PATH
-      - name: Build binary
+      - name: Build lib
+        if: ${{ inputs.lib }}
+        shell: bash
+        run: |
+          cargo build --lib --release --target ${{ matrix.platform.target }} ${{ inputs.args }}
+      - name: Build bin
+        if: ${{ inputs.bin }}
+        shell: bash
+        run: |
+          cargo build --bins --release --target ${{ matrix.platform.target }} ${{ inputs.args }}
+      - name: Build all
+        if: ${{ !inputs.lib }} && ${{ !inputs.bin }}
         shell: bash
         run: |
           cargo build --release --target ${{ matrix.platform.target }} ${{ inputs.args }}
