@@ -105,7 +105,13 @@ jobs:
         if: ${{ inputs.bin }}
         shell: bash
         run: |
-          cargo build --bins --release --target ${{ matrix.platform.target }} ${{ inputs.args }}
+          if [ ${{ matrix.platform.musl }} ] && [ ${{ inputs.musl }} ]; then
+            cargo build --bins --release --target ${{ matrix.platform.musl }} ${{ inputs.args }}
+            mkdir -p $(pwd)/target/${{ matrix.platform.target }}/release
+            cp $(pwd)/target/${{ matrix.platform.musl }}/release/* $(pwd)/target/${{ matrix.platform.target }}/release
+          else
+            cargo build --bins --release --target ${{ matrix.platform.target }} ${{ inputs.args }}
+          fi
       - name: Build all
         if: ${{ !inputs.lib }} && ${{ !inputs.bin }}
         shell: bash
