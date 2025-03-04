@@ -23,6 +23,10 @@ on:
         description: "Additional args"
         required: false
         type: string
+      musl:
+        description: "Build bins as musl"
+        required: false
+        type: boolean
 
 jobs:
   build:
@@ -32,14 +36,17 @@ jobs:
       matrix:
         platform:
           - os_name: linux-x86_64
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             target: x86_64-unknown-linux-gnu
+            musl: x86_64-unknown-linux-musl
           - os_name: linux-i686
-            os: ubuntu-22.04
+            os: ubuntu-24.04
             target: i686-unknown-linux-gnu
+            musl: i686-unknown-linux-musl
           - os_name: linux-aarch64
-            os: ubuntu-22.04-arm
+            os: ubuntu-24.04-arm
             target: aarch64-unknown-linux-gnu
+            musl: aarch64-unknown-linux-musl
           - os_name: windows-x86_64
             os: windows-2025
             target: x86_64-pc-windows-msvc
@@ -56,6 +63,9 @@ jobs:
       - name: Update rust
         shell: bash
         run: |
+          if [ ${{ matrix.platform.musl }} ] && [ ${{ inputs.musl }} ]; then
+            rustup target add ${{ matrix.platform.musl }}
+          fi
           rustup target add ${{ matrix.platform.target }}
           rustup update
       - name: Cache cargo & target directories
