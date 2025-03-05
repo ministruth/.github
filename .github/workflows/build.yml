@@ -78,6 +78,9 @@ jobs:
         shell: bash
         run: |
           sudo dpkg --add-architecture i386 && sudo apt-get update && sudo apt-get install -y gcc-multilib g++-multilib libssl-dev:i386
+          if [ ${{ matrix.platform.musl }} ] && [ ${{ inputs.musl }} ]; then
+            sudo apt-get install -y musl-tools:i386 musl-dev:i386
+          fi
           echo "OPENSSL_INCLUDE_DIR=/usr/include/i386-linux-gnu/openssl" >> $GITHUB_ENV
           echo "OPENSSL_LIB_DIR=/usr/lib/i386-linux-gnu" >> $GITHUB_ENV
       - name: Set OpenSSL path
