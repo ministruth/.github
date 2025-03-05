@@ -36,7 +36,6 @@ jobs:
         shell: bash
         run: |
           cp -r assets ${{ inputs.prefix }}-linux-x86_64
-          cp -r assets ${{ inputs.prefix }}-linux-i686
           cp -r assets ${{ inputs.prefix }}-linux-aarch64
           cp -r assets ${{ inputs.prefix }}-windows-x86_64
           cp -r assets ${{ inputs.prefix }}-darwin-x86_64
@@ -47,7 +46,6 @@ jobs:
           mkdir release
           ${{ inputs.cmd }}
           tar czvf release/${{ inputs.prefix }}-linux-x86_64.tar.gz ${{ inputs.prefix }}-linux-x86_64
-          tar czvf release/${{ inputs.prefix }}-linux-i686.tar.gz ${{ inputs.prefix }}-linux-i686
           tar czvf release/${{ inputs.prefix }}-linux-aarch64.tar.gz ${{ inputs.prefix }}-linux-aarch64
           7z a release/${{ inputs.prefix }}-windows-x86_64.zip ${{ inputs.prefix }}-windows-x86_64
           tar czvf release/${{ inputs.prefix }}-darwin-x86_64.tar.gz ${{ inputs.prefix }}-darwin-x86_64
