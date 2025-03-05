@@ -98,7 +98,7 @@ jobs:
           if [ ${{ matrix.platform.musl }} ] && [ ${{ inputs.musl }} ]; then
             cargo build --bins --release --target ${{ matrix.platform.musl }} ${{ inputs.args }}
             mkdir -p $(pwd)/target/${{ matrix.platform.target }}/release
-            cp $(pwd)/target/${{ matrix.platform.musl }}/release/* $(pwd)/target/${{ matrix.platform.target }}/release
+            cp $(pwd)/target/${{ matrix.platform.musl }}/release/* $(pwd)/target/${{ matrix.platform.target }}/release || true
           else
             cargo build --bins --release --target ${{ matrix.platform.target }} ${{ inputs.args }}
           fi
