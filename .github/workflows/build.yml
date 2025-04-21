@@ -103,7 +103,7 @@ jobs:
             cargo build --bins --release --target ${{ matrix.platform.target }} ${{ inputs.args }}
           fi
       - name: Build all
-        if: ${{ !inputs.lib }} && ${{ !inputs.bin }}
+        if: ${{ !inputs.lib && !inputs.bin }}
         shell: bash
         run: |
           cargo build --release --target ${{ matrix.platform.target }} ${{ inputs.args }}
